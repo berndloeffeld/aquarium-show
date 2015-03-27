@@ -5,9 +5,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import javax.servlet.ServletException;
 
@@ -17,24 +15,27 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import de.aquariumshow.exceptions.InvalidParameterException;
 import de.aquariumshow.model.Aquarium;
+import de.aquariumshow.validators.ParameterValidators;
 
 @RestController
 public class AquariumController {
 
 	private Logger log = LoggerFactory.getLogger(AquariumController.class);
-	
+
 	@RequestMapping(value = "/aquarium/{id}")
 	public Aquarium getAquarium(@PathVariable("id") String id)
-			throws ServletException, IOException {
-		
+			throws ServletException, IOException, InvalidParameterException {
+
 		log.debug("Get Aquarium with ID: {}", id);
-		
+		Long idLong = ParameterValidators.getValidLong(id, "Aquarium ID");
+
 		showDatabase();
 		Aquarium result = new Aquarium();
-		result.setId(id);
+		result.setId(idLong);
 		result.setName("Name " + id);
-		
+
 		log.info("Aquarium {} is named {}", result.getId(), result.getName());
 		return result;
 	}
@@ -43,25 +44,14 @@ public class AquariumController {
 		Connection connection = null;
 		try {
 			connection = getConnection();
-
-			Statement stmt = connection.createStatement();
-			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ticks (tick timestamp)");
-			stmt.executeUpdate("INSERT INTO ticks VALUES (now())");
-			ResultSet rs = stmt.executeQuery("SELECT tick FROM ticks");
-
-			String out = "Hello!\n";
-			while (rs.next()) {
-				out += "Read from Database: " + rs.getTimestamp("tick") + "\n";
-			}
-			log.info(out);
-
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("Error while getting database connection", e);
 		} finally {
 			if (connection != null)
 				try {
 					connection.close();
 				} catch (SQLException e) {
+					log.error("Error while closing db", e);
 				}
 		}
 	}

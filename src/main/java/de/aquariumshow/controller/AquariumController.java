@@ -25,7 +25,7 @@ public class AquariumController {
 	@Autowired
 	private AquariumRepository aquariumRepository;
 
-	@RequestMapping(value = "/aquarium/{id}")
+	@RequestMapping(value = "/api/v1/aquarium/{id}")
 	public Aquarium getAquarium(@PathVariable("id") String id)
 			throws ServletException, IOException, InvalidParameterException, NotFoundException {
 

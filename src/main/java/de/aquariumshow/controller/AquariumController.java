@@ -42,7 +42,7 @@ public class AquariumController {
 
 			String out = "Hello!\n";
 			while (rs.next()) {
-				out += "Read from DB: " + rs.getTimestamp("tick") + "\n";
+				out += "Read from Database: " + rs.getTimestamp("tick") + "\n";
 			}
 			System.out.println(out);
 

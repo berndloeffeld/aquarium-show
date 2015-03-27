@@ -11,6 +11,8 @@ import java.sql.Statement;
 
 import javax.servlet.ServletException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,13 +22,20 @@ import de.aquariumshow.model.Aquarium;
 @RestController
 public class AquariumController {
 
+	private Logger log = LoggerFactory.getLogger(AquariumController.class);
+	
 	@RequestMapping(value = "/aquarium/{id}")
 	public Aquarium getAquarium(@PathVariable("id") String id)
 			throws ServletException, IOException {
+		
+		log.debug("Get Aquarium with ID: {}", id);
+		
 		showDatabase();
 		Aquarium result = new Aquarium();
 		result.setId(id);
 		result.setName("Name " + id);
+		
+		log.info("Aquarium {} is named {}", result.getId(), result.getName());
 		return result;
 	}
 
@@ -44,7 +53,7 @@ public class AquariumController {
 			while (rs.next()) {
 				out += "Read from Database: " + rs.getTimestamp("tick") + "\n";
 			}
-			System.out.println(out);
+			log.info(out);
 
 		} catch (Exception e) {
 			e.printStackTrace();

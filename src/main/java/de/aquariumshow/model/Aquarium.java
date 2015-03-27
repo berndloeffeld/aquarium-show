@@ -14,6 +14,14 @@ public class Aquarium {
 	
 	private String name;
 
+	protected Aquarium() {
+	}
+	
+	public Aquarium(long id, String name) {
+		this.id = id;
+		this.name = name;
+	}
+
 	public long getId() {
 		return id;
 	}

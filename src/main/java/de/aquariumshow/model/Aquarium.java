@@ -5,6 +5,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 @Entity
 public class Aquarium {
 
@@ -38,4 +40,10 @@ public class Aquarium {
 		this.name = name;
 	}
 
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("ID", id).append("Name", name).toString();
+	}
+
+	
 }

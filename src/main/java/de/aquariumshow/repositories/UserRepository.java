@@ -10,4 +10,5 @@ import de.aquariumshow.model.ASUser;
 @Qualifier(value = "userRepository")
 public interface UserRepository extends CrudRepository<ASUser, Long> {
     public ASUser findByUsername(String username);
+    public ASUser findOneByEmail(String email);
 }

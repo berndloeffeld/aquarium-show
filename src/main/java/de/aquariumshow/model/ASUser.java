@@ -38,7 +38,17 @@ public class ASUser {
     @OneToMany(mappedBy = "user")
     private Set<UserRole> roles;
 
-    public static ASUser createUser(String username, String email, String password) {
+    public ASUser() {
+    	
+    }
+    
+    public ASUser(long id, String email, String username) {
+		this.id = id;
+		this.email = email;
+		this.username = username;
+	}
+
+	public static ASUser createUser(String username, String email, String password) {
         ASUser user = new ASUser();
 
         user.username = username;

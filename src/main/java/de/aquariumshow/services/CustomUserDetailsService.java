@@ -29,10 +29,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Transactional(readOnly=true)
     @Override
-    public UserDetails loadUserByUsername(final String username)
+    public UserDetails loadUserByUsername(final String email)
             throws UsernameNotFoundException {
+    	//Email is the identifier
 
-        de.aquariumshow.model.ASUser user = userRepository.findByUsername(username);
+        de.aquariumshow.model.ASUser user = userRepository.findOneByEmail(email);
         List<GrantedAuthority> authorities = buildUserAuthority(user.getRoles());
 
         return buildUserForAuthentication(user, authorities);

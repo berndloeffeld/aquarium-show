@@ -11,57 +11,61 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.social.security.SpringSocialConfigurer;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private static PasswordEncoder encoder;
+	private static PasswordEncoder encoder;
 
-    @Autowired
-    private UserDetailsService customUserDetailsService;
+	@Autowired
+	private UserDetailsService customUserDetailsService;
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/auth/**").authenticated();
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.authorizeRequests().antMatchers("/auth/**").authenticated();
 
-//        http.formLogin()
-//                .defaultSuccessUrl("/auth")
-//                .loginPage("/login")
-//                .permitAll()
-//                .and()
-//                .logout()
-//                .logoutSuccessUrl("/logout")
-//                .permitAll();
-        
-        http
-        .authorizeRequests()
-            .antMatchers("/", "/home").permitAll()
-            .anyRequest().authenticated()
-            .and()
-        .formLogin()
-            .loginPage("/login")
-            .permitAll()
-            .and()
-        .logout()
-            .permitAll();
-        
-        http.csrf().disable();
-    }
+		// http.formLogin()
+		// .defaultSuccessUrl("/auth")
+		// .loginPage("/login")
+		// .permitAll()
+		// .and()
+		// .logout()
+		// .logoutSuccessUrl("/logout")
+		// .permitAll();
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(customUserDetailsService)
-                .passwordEncoder(passwordEncoder());
-    }
+		http.authorizeRequests()
+				.antMatchers("/", "/home")
+				.permitAll()
+				.anyRequest()
+				.authenticated()
+				.and()
+				.formLogin()
+				.loginPage("/login")
+				.permitAll()
+				.and()
+				.apply(new SpringSocialConfigurer().postLoginUrl("/")
+						.alwaysUsePostLoginUrl(true)).and().logout()
+				.permitAll();
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        if(encoder == null) {
-            encoder = new BCryptPasswordEncoder();
-        }
+		http.csrf().disable();
+	}
 
-        return encoder;
-    }
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth)
+			throws Exception {
+		auth.userDetailsService(customUserDetailsService).passwordEncoder(
+				passwordEncoder());
+	}
+
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		if (encoder == null) {
+			encoder = new BCryptPasswordEncoder();
+		}
+
+		return encoder;
+	}
 }

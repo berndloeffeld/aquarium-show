@@ -28,7 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().antMatchers("/auth/**").authenticated();
 
 		http.authorizeRequests()
-				.antMatchers("/", "/home")
+				.antMatchers("/", "/home", "/css/**", "/js/**", "/fonts/*", "/img/*")
 				.permitAll()
 				.anyRequest()
 				.authenticated()
@@ -38,7 +38,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.permitAll()
 				.and()
 				.apply(new SpringSocialConfigurer().postLoginUrl("/")
-						.alwaysUsePostLoginUrl(true)).and().logout()
+						.alwaysUsePostLoginUrl(true))
+				.and()
+				.logout()
 				.permitAll();
 
 		http.csrf().disable();

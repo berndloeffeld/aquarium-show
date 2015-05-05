@@ -32,6 +32,8 @@ public class SocialConfiguration implements SocialConfigurer {
 	public void addConnectionFactories(
 			ConnectionFactoryConfigurer connectionFactoryConfigurer,
 			Environment environment) {
+		
+		//TODO config issues
 		String key = "959426730747977";
 //				environment.getProperty("twitter.consumerKey");
 		String secret = "d410dc30bbe22be2e714c202d75216ea";

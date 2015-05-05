@@ -17,8 +17,7 @@ import de.aquariumshow.repositories.UserRoleRepository;
 @Service
 public class AccountConnectionSignUpService implements ConnectionSignUp {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AccountConnectionSignUpService.class);
-
+    private final Logger log = LoggerFactory.getLogger(AccountConnectionSignUpService.class);
     
     @Autowired
     private UserRepository userRepository;
@@ -30,7 +29,7 @@ public class AccountConnectionSignUpService implements ConnectionSignUp {
         org.springframework.social.connect.UserProfile profile = connection.fetchUserProfile();
         String userId = UUID.randomUUID().toString();
         
-        LOG.debug("Created user-id: " + userId);
+        log.debug("Created user-id: {}", userId);
         ASUser user = new ASUser();
         user.setGeneratedSocialUserId(userId);
         user.setEmail(profile.getEmail());
@@ -41,9 +40,8 @@ public class AccountConnectionSignUpService implements ConnectionSignUp {
         role.setUser(user);
         role.setVersion(1L);
         userRoleRepository.save(role);
-        
-        
-//        usersDao.createUser(userId, new ASUser());
+
+        log.debug("Saved user {} with role {}", role);
         return userId;
     }
 }

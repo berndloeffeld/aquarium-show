@@ -1,4 +1,4 @@
-package de.aquariumshow.controller;
+package de.aquariumshow.api.controller;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
@@ -21,6 +21,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import de.aquariumshow.api.controller.AquariumController;
 import de.aquariumshow.application.Application;
 import de.aquariumshow.model.Aquarium;
 

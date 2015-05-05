@@ -1,4 +1,4 @@
-package de.aquariumshow.controller;
+package de.aquariumshow.api.controller;
 
 import java.io.IOException;
 

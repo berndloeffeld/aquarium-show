@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 /**
  * Created by magnus on 18/08/14.
  */
@@ -63,20 +65,6 @@ public class UserConnection {
         this.expireTime = expireTime;
     }
 
-    public String toString() {
-        return
-            "userId = " + userId +
-            ", providerId = " + providerId +
-            ", providerUserId = " + providerUserId +
-            ", rank = " + rank +
-            ", displayName = " + displayName +
-            ", profileUrl = " + profileUrl +
-            ", imageUrl = " + imageUrl +
-            ", accessToken = " + accessToken +
-            ", secret = " + secret +
-            ", refreshToken = " + refreshToken +
-            ", expireTime = " + expireTime;
-    }
 
     public String getUserId() {
         return userId;
@@ -120,5 +108,12 @@ public class UserConnection {
 
     public Long getExpireTime() {
         return expireTime;
+    }
+
+    public String toString() {
+    	return new ToStringBuilder(this).append("UserID", userId)
+    			.append("Provider ID", providerId)
+    			.append("ProviderUserId", providerUserId)
+    			.append("DisplayName", displayName).toString();
     }
 }

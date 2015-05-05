@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,6 +26,8 @@ import de.aquariumshow.repositories.UserRepository;
 @Qualifier("customUserDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
 
+    private final Logger log = LoggerFactory.getLogger(CustomUserDetailsService.class);
+
 	@Autowired
 	private UserRepository userRepository;
 
@@ -33,11 +37,14 @@ public class CustomUserDetailsService implements UserDetailsService {
 			throws UsernameNotFoundException {
 		// Identifier is either the generated social id or the email.
 
+		log.debug("Try to find user by Identifier {}", id);
+		
 		ASUser user;
 		List<GrantedAuthority> authorities = null;
 
 		user = userRepository.findOneByGeneratedSocialUserId(id);
 		if (null == user) {
+			log.debug("User not found by generated social identifier {}. Try by email", id);
 			user = userRepository.findOneByEmail(id);
 		}
 

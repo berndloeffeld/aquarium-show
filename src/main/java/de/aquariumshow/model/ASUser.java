@@ -12,6 +12,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 import de.aquariumshow.security.PasswordCrypto;
 import de.aquariumshow.security.RoleEnum;
 
@@ -127,4 +129,9 @@ public class ASUser {
     public void setRoles(Set<UserRole> roles) {
         this.roles = roles;
     }
+    
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("ID", id).append("Name", username).append("Email", email).toString();
+	}
 }

@@ -49,7 +49,7 @@ public class UsersDao {
     public UserConnection getUserConnection(final String userId) {
         LOG.debug("SQL SELECT ON UserConnection: {}", userId);
 
-        return jdbcTemplate.queryForObject("select * from UserConnection where userId = ?",
+        return jdbcTemplate.queryForObject("select * from userconnection where user_id = ?",
             new RowMapper<UserConnection>() {
                 public UserConnection mapRow(ResultSet rs, int rowNum) throws SQLException {
                 return new UserConnection(

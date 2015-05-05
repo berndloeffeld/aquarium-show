@@ -35,6 +35,9 @@ public class ASUser {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "generatedsocialuserid")
+    private String generatedSocialUserId;
+
     @OneToMany(mappedBy = "user")
     private Set<UserRole> roles;
 
@@ -109,7 +112,15 @@ public class ASUser {
         this.email = email;
     }
 
-    public Set<UserRole> getRoles() {
+    public String getGeneratedSocialUserId() {
+		return generatedSocialUserId;
+	}
+
+	public void setGeneratedSocialUserId(String generatedSocialUserId) {
+		this.generatedSocialUserId = generatedSocialUserId;
+	}
+
+	public Set<UserRole> getRoles() {
         return roles;
     }
 

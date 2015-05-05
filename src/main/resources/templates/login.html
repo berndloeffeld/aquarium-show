@@ -3,15 +3,26 @@
 	<head th:include="common :: headerFragment" />
     <body>
         <div th:if="${param.error}">
-            Invalid email and password.
+        	<div class="row">
+	            <div class="ten columns">Invalid email and password.</div>
+            </div>
         </div>
         <div th:if="${param.logout}">
-            You have been logged out.
+        	<div class="row">
+	            <div class="ten columns">You have been logged out.</div>
+	        </div>
         </div>
+        <div class="row">
+        <div class="ten columns">
         <form th:action="@{/login}" method="post">
             <div><label> Email : <input type="text" name="username"/> </label></div>
             <div><label> Password: <input type="password" name="password"/> </label></div>
             <div><input type="submit" value="Sign In"/></div>
         </form>
+        </div>
+        </div>
+        <div class="row">
+        	<div class="one column"><div class="medium primary btn"><a th:href="@{/auth/facebook}">Facebook</a></div></div>
+        </div>
     </body>
 </html>

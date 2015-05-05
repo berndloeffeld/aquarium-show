@@ -1,5 +1,6 @@
 package de.aquariumshow.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,17 +16,37 @@ public class UserConnection {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "userid")
     private final String userId;
 
+	@Column(name = "providerid")
     private final String providerId;
+	
+	@Column(name = "provideruserid")
     private final String providerUserId;
+	
+	@Column(name = "rank")
     private final int rank;
+	
+	@Column(name = "displayname")
     private final String displayName;
+	
+	@Column(name = "profileurl")
     private final String profileUrl;
+	
+	@Column(name = "imageurl")
     private final String imageUrl;
+	
+	@Column(name = "accesstoken")
     private final String accessToken;
+	
+	@Column(name = "secret")
     private final String secret;
+	
+	@Column(name = "refreshtoken")
     private final String refreshToken;
+	
+	@Column(name = "expiretime")
     private final Long expireTime;
 
     public UserConnection(String userId, String providerId, String providerUserId, int rank, String displayName, String profileUrl, String imageUrl, String accessToken, String secret, String refreshToken, Long expireTime) {

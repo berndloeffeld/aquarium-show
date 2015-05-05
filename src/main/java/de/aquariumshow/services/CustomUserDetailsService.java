@@ -24,36 +24,50 @@ import de.aquariumshow.repositories.UserRepository;
 @Qualifier("customUserDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
 
-    @Autowired
-    private UserRepository userRepository;
+	@Autowired
+	private UserRepository userRepository;
 
-    @Transactional(readOnly=true)
-    @Override
-    public UserDetails loadUserByUsername(final String email)
-            throws UsernameNotFoundException {
-    	//Email is the identifier
+	@Transactional(readOnly = true)
+	@Override
+	public UserDetails loadUserByUsername(final String id)
+			throws UsernameNotFoundException {
+		// Identifier is either the generated social id or the email.
 
-        de.aquariumshow.model.ASUser user = userRepository.findOneByEmail(email);
-        List<GrantedAuthority> authorities = buildUserAuthority(user.getRoles());
+		ASUser user;
+		List<GrantedAuthority> authorities = null;
 
-        return buildUserForAuthentication(user, authorities);
+		user = userRepository.findOneByGeneratedSocialUserId(id);
+		if (null == user) {
+			user = userRepository.findOneByEmail(id);
+		}
 
-    }
+		if (null != user) {
+			authorities = buildUserAuthority(user.getRoles());
+		}
 
-    private User buildUserForAuthentication(ASUser user,
-                                            List<GrantedAuthority> authorities) {
-        return new User(user.getUsername(), user.getPassword(), authorities);
-    }
+		return buildUserForAuthentication(user, authorities);
 
-    private List<GrantedAuthority> buildUserAuthority(Set<UserRole> userRoles) {
+	}
 
-        Set<GrantedAuthority> setAuths = new HashSet<GrantedAuthority>();
+	private User buildUserForAuthentication(ASUser user,
+			List<GrantedAuthority> authorities) {
+		if (null != user.getGeneratedSocialUserId()) {
+			return new User(user.getGeneratedSocialUserId(),
+					user.getGeneratedSocialUserId(), authorities);
+		} else {
+			return new User(user.getUsername(), user.getPassword(), authorities);
+		}
+	}
 
-        // Build user's authorities
-        for (UserRole userRole : userRoles) {
-            setAuths.add(new SimpleGrantedAuthority(userRole.getRoleName()));
-        }
+	private List<GrantedAuthority> buildUserAuthority(Set<UserRole> userRoles) {
 
-        return new ArrayList<GrantedAuthority>(setAuths);
-    }
+		Set<GrantedAuthority> setAuths = new HashSet<GrantedAuthority>();
+
+		// Build user's authorities
+		for (UserRole userRole : userRoles) {
+			setAuths.add(new SimpleGrantedAuthority(userRole.getRoleName()));
+		}
+
+		return new ArrayList<GrantedAuthority>(setAuths);
+	}
 }

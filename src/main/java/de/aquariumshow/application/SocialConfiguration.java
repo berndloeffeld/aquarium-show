@@ -13,7 +13,7 @@ import org.springframework.social.config.annotation.SocialConfigurer;
 import org.springframework.social.connect.ConnectionFactoryLocator;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
-import org.springframework.social.twitter.connect.TwitterConnectionFactory;
+import org.springframework.social.facebook.connect.FacebookConnectionFactory;
 import org.springframework.social.security.AuthenticationNameUserIdSource;
 
 import de.aquariumshow.repositories.UsersDao;
@@ -28,17 +28,20 @@ public class SocialConfiguration implements SocialConfigurer {
 
 	@Autowired
 	private UsersDao usersDao;
+	
+	@Autowired
+	private AccountConnectionSignUpService accountConnectionSignUpService;
 
 	@Override
 	public void addConnectionFactories(
 			ConnectionFactoryConfigurer connectionFactoryConfigurer,
 			Environment environment) {
-		String key = "dddd";
+		String key = "959426730747977";
 //				environment.getProperty("twitter.consumerKey");
-		String secret = "dddd";
+		String secret = "d410dc30bbe22be2e714c202d75216ea";
 //			environment.getProperty("twitter.consumerSecret");
 		connectionFactoryConfigurer
-				.addConnectionFactory(new TwitterConnectionFactory(key, secret));
+				.addConnectionFactory(new FacebookConnectionFactory(key, secret));
 	}
 
 	@Override
@@ -52,8 +55,7 @@ public class SocialConfiguration implements SocialConfigurer {
 
 		JdbcUsersConnectionRepository repository = new JdbcUsersConnectionRepository(
 				dataSource, connectionFactoryLocator, Encryptors.noOpText());
-		repository.setConnectionSignUp(new AccountConnectionSignUpService(
-				usersDao));
+		repository.setConnectionSignUp(accountConnectionSignUpService);
 		return repository;
 	}
 }

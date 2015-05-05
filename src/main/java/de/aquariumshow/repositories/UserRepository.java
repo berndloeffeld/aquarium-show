@@ -11,4 +11,5 @@ import de.aquariumshow.model.ASUser;
 public interface UserRepository extends CrudRepository<ASUser, Long> {
     public ASUser findByUsername(String username);
     public ASUser findOneByEmail(String email);
+    public ASUser findOneByGeneratedSocialUserId(String id);
 }

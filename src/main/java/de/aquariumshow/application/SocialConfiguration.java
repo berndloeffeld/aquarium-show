@@ -16,7 +16,6 @@ import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
 import org.springframework.social.facebook.connect.FacebookConnectionFactory;
 import org.springframework.social.security.AuthenticationNameUserIdSource;
 
-import de.aquariumshow.repositories.UsersDao;
 import de.aquariumshow.services.AccountConnectionSignUpService;
 
 @Configuration
@@ -26,9 +25,6 @@ public class SocialConfiguration implements SocialConfigurer {
 	@Autowired
 	private DataSource dataSource;
 
-	@Autowired
-	private UsersDao usersDao;
-	
 	@Autowired
 	private AccountConnectionSignUpService accountConnectionSignUpService;
 

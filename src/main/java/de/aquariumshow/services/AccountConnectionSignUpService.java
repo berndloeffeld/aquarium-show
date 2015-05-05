@@ -13,7 +13,6 @@ import de.aquariumshow.model.ASUser;
 import de.aquariumshow.model.UserRole;
 import de.aquariumshow.repositories.UserRepository;
 import de.aquariumshow.repositories.UserRoleRepository;
-import de.aquariumshow.repositories.UsersDao;
 
 @Service
 public class AccountConnectionSignUpService implements ConnectionSignUp {

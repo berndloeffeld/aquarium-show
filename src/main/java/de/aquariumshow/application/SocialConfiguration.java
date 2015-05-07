@@ -3,6 +3,8 @@ package de.aquariumshow.application;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.encrypt.Encryptors;
@@ -18,13 +20,19 @@ import org.springframework.social.security.AuthenticationNameUserIdSource;
 
 import de.aquariumshow.services.AccountConnectionSignUpService;
 
+import de.aquariumshow.application.SocialConfiguration.SocialProperties;
+
 @Configuration
 @EnableSocial
+@EnableConfigurationProperties(SocialProperties.class)
 public class SocialConfiguration implements SocialConfigurer {
 
 	@Autowired
 	private DataSource dataSource;
 
+	@Autowired
+	private SocialProperties socialProperties;
+	
 	@Autowired
 	private AccountConnectionSignUpService accountConnectionSignUpService;
 
@@ -32,16 +40,22 @@ public class SocialConfiguration implements SocialConfigurer {
 	public void addConnectionFactories(
 			ConnectionFactoryConfigurer connectionFactoryConfigurer,
 			Environment environment) {
+
+		FacebookConnectionFactory facebookConnectionFactory;
+
+		// PG Config is always available in heroku prod
+		String herokuEnv = System.getenv("HEROKU_POSTGRESQL_AQUA_URL");
 		
-		//TODO config issues
-//		String key = "958209654203018";
-		String key = "959426730747977";
-//				environment.getProperty("twitter.consumerKey");
-//		String secret = "867dd35a5e5f0e4e5a3abfa6bf0cea50";
-		String secret = "d410dc30bbe22be2e714c202d75216ea";
-//			environment.getProperty("twitter.consumerSecret");
+		if (null != herokuEnv) {
+			facebookConnectionFactory = new FacebookConnectionFactory(
+					System.getenv("FACEBOOK_APP_ID"), System.getenv("FACEBOOK_APP_SECRET"));
+		} else {
+			facebookConnectionFactory = new FacebookConnectionFactory(
+					socialProperties.getFacebookAppId(), socialProperties.getFacebookAppSecret());
+		}
+
 		connectionFactoryConfigurer
-				.addConnectionFactory(new FacebookConnectionFactory(key, secret));
+				.addConnectionFactory(facebookConnectionFactory);
 	}
 
 	@Override
@@ -57,5 +71,23 @@ public class SocialConfiguration implements SocialConfigurer {
 				dataSource, connectionFactoryLocator, Encryptors.noOpText());
 		repository.setConnectionSignUp(accountConnectionSignUpService);
 		return repository;
+	}
+	
+	@ConfigurationProperties("de.aquariumshow.social")
+	public static class SocialProperties {
+		private String facebookAppId;
+		private String facebookAppSecret;
+		public String getFacebookAppId() {
+			return facebookAppId;
+		}
+		public void setFacebookAppId(String facebookAppId) {
+			this.facebookAppId = facebookAppId;
+		}
+		public String getFacebookAppSecret() {
+			return facebookAppSecret;
+		}
+		public void setFacebookAppSecret(String facebookAppSecret) {
+			this.facebookAppSecret = facebookAppSecret;
+		}
 	}
 }

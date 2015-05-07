@@ -1,6 +1,5 @@
 package de.aquariumshow.model;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -13,9 +12,6 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-
-import de.aquariumshow.security.PasswordCrypto;
-import de.aquariumshow.security.RoleEnum;
 
 @Entity
 @Table(name = "users")
@@ -47,33 +43,6 @@ public class ASUser {
     	
     }
     
-    public ASUser(long id, String email, String username) {
-		this.id = id;
-		this.email = email;
-		this.username = username;
-	}
-
-	public static ASUser createUser(String username, String email, String password) {
-        ASUser user = new ASUser();
-
-        user.username = username;
-        user.email = email;
-        user.password = PasswordCrypto.getInstance().encrypt(password);
-
-        if(user.roles == null) {
-            user.roles = new HashSet<UserRole>();
-        }
-
-        //create a new user with basic user privileges
-        user.roles.add(
-                new UserRole(
-                        RoleEnum.USER.toString(),
-                        user
-                ));
-
-        return user;
-    }
-
     public Long getId() {
         return id;
     }

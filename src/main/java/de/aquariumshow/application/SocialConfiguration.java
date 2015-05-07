@@ -2,6 +2,8 @@ package de.aquariumshow.application;
 
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -19,7 +21,6 @@ import org.springframework.social.facebook.connect.FacebookConnectionFactory;
 import org.springframework.social.security.AuthenticationNameUserIdSource;
 
 import de.aquariumshow.services.AccountConnectionSignUpService;
-
 import de.aquariumshow.application.SocialConfiguration.SocialProperties;
 
 @Configuration
@@ -27,6 +28,8 @@ import de.aquariumshow.application.SocialConfiguration.SocialProperties;
 @EnableConfigurationProperties(SocialProperties.class)
 public class SocialConfiguration implements SocialConfigurer {
 
+	static Logger log = LoggerFactory.getLogger(SocialConfiguration.class);
+	
 	@Autowired
 	private DataSource dataSource;
 
@@ -47,8 +50,13 @@ public class SocialConfiguration implements SocialConfigurer {
 		String herokuEnv = System.getenv("HEROKU_POSTGRESQL_AQUA_URL");
 		
 		if (null != herokuEnv) {
+			String fbappid = System.getenv("FACEBOOK_APP_ID");
+			String fbappsecret = System.getenv("FACEBOOK_APP_SECRET");
+			log.debug("Facebook AppID: {}", fbappid);
+			log.debug("Facebook App Secret: {}", fbappsecret);
 			facebookConnectionFactory = new FacebookConnectionFactory(
-					System.getenv("FACEBOOK_APP_ID"), System.getenv("FACEBOOK_APP_SECRET"));
+					fbappid, fbappsecret);
+			
 		} else {
 			facebookConnectionFactory = new FacebookConnectionFactory(
 					socialProperties.getFacebookAppId(), socialProperties.getFacebookAppSecret());

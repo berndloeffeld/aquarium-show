@@ -5,9 +5,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.inject.Inject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -28,8 +29,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private final Logger log = LoggerFactory.getLogger(CustomUserDetailsService.class);
 
-	@Autowired
 	private UserRepository userRepository;
+	
+	@Inject
+	public CustomUserDetailsService(UserRepository userRepository) {
+		super();
+		this.userRepository = userRepository;
+	}
 
 	@Transactional(readOnly = true)
 	@Override
@@ -37,6 +43,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 			throws UsernameNotFoundException {
 		// Identifier is either the generated social id or the email.
 
+		if (null == id) {
+			throw new UsernameNotFoundException("ID must not be null");
+		}
+		
 		log.debug("Try to find user by Identifier {}", id);
 		
 		ASUser user;
@@ -50,6 +60,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 		if (null != user) {
 			authorities = buildUserAuthority(user.getRoles());
+		} else {
+			throw new UsernameNotFoundException("No user found for ID " + id);
 		}
 
 		return buildUserForAuthentication(user, authorities);

@@ -50,12 +50,8 @@ public class SocialConfiguration implements SocialConfigurer {
 		String herokuEnv = System.getenv("HEROKU_POSTGRESQL_AQUA_URL");
 		
 		if (null != herokuEnv) {
-			String fbappid = System.getenv("FACEBOOK_APP_ID");
-			String fbappsecret = System.getenv("FACEBOOK_APP_SECRET");
-			log.debug("Facebook AppID: {}", fbappid);
-			log.debug("Facebook App Secret: {}", fbappsecret);
 			facebookConnectionFactory = new FacebookConnectionFactory(
-					fbappid, fbappsecret);
+					System.getenv("FACEBOOK_APP_ID"), System.getenv("FACEBOOK_APP_SECRET"));
 			
 		} else {
 			facebookConnectionFactory = new FacebookConnectionFactory(

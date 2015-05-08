@@ -52,7 +52,6 @@ public class SocialConfiguration implements SocialConfigurer {
 		if (null != herokuEnv) {
 			facebookConnectionFactory = new FacebookConnectionFactory(
 					System.getenv("FACEBOOK_APP_ID"), System.getenv("FACEBOOK_APP_SECRET"));
-			
 		} else {
 			facebookConnectionFactory = new FacebookConnectionFactory(
 					socialProperties.getFacebookAppId(), socialProperties.getFacebookAppSecret());

@@ -1,43 +1,96 @@
-/*
-We highly recommend you use SASS and write your custom styles in sass/_custom.scss.
-However, this blank file is available if you prefer
-*/
-
 @font-face {
-    font-family: 'Comfortaa'; 
-    src: url('/fonts/Comfortaa-Regular.ttf'); 
+  font-family: 'Comfortaa';
+  src: url("/fonts/Comfortaa-Regular.ttf");
+}
+@font-face {
+  font-family: 'Comfortaa-Bold';
+  src: url("/fonts/Comfortaa-Bold.ttf");
+}
+/* line 21, ../compass/sass/_base.scss */
+.fullbar, .socialbar, .topbar {
+  width: 100%;
+  display: block;
 }
 
-@font-face {
-    font-family: 'Comfortaa-Bold'; /*a name to be used later*/
-    src: url('/fonts/Comfortaa-Bold.ttf'); /*URL to font*/
+/* line 26, ../compass/sass/_base.scss */
+.logotext {
+  font-family: Comfortaa-Bold, Georgia;
+  letter-spacing: 0.1em;
+  text-align: center;
 }
-.socialbar { font-family: Comfortaa, Georgia; color: #ffffff; width: 100%; height: 30px; display: block; margin-bottom: 0px; background: #69c2c3; position: relative;}
-.socialbutton { padding: 5px; }
 
-.topbar {width: 100%; min-height: 80px; display: block; margin-bottom: 20px; background: #20254c; position: relative;}
+/* line 3, ../compass/sass/style.scss */
+.socialbar {
+  color: #ffffff;
+  height: 30px;
+  margin-bottom: 0px;
+  background: #69c2c3;
+  position: relative;
+}
 
-.logotext {margin-top:20px; font-family: Comfortaa-Bold, Georgia; color: #ffffff; font-size: 140%; letter-spacing: 0.1em; text-align: center;}
-.logosubtext {font-family: Comfortaa, Georgia; color: #00a3da; font-size: 90%; letter-spacing: 0.1em; text-align: center;}
+/* line 12, ../compass/sass/style.scss */
+.socialbutton {
+  padding: 5px;
+}
 
-.footbar {text-align: right; font-size: 70%;}
-.footbar a:link{color: #20254c; margin-right: 20px;}
-.footbar a:visited{color: #20254c; margin-right: 20px;}
-.footbar a:hover{color: #20254c; margin-right: 20px;}
-.footbar a:active{color: #20254c; margin-right: 20px;}
+/* line 16, ../compass/sass/style.scss */
+.topbar {
+  min-height: 80px;
+  margin-bottom: 20px;
+  background: #20254c;
+  position: relative;
+}
 
+/* line 24, ../compass/sass/style.scss */
+.logotoptext {
+  margin-top: 20px;
+  color: #ffffff;
+  font-size: 140%;
+}
 
+/* line 30, ../compass/sass/style.scss */
+.logosubtext {
+  color: #00a3da;
+  font-size: 90%;
+}
 
-.frontcircleOne {width:100%;}
-.frontcircleOne:after { content: ""; display: block; width: 100%;  height:0; padding-bottom: 100%; background: #69c2c3; -moz-border-radius: 50%; -webkit-border-radius: 50%; border-radius: 50%;}
-.frontcircleOne div {float:left; width:100%; padding-top:50%; line-height:1em; margin-top:-0.5em; text-align:center; color:white;}
+/* line 35, ../compass/sass/style.scss */
+.frontcircle {
+  width: 100%;
+}
 
-.frontcircleTwo {width:100%;}
-.frontcircleTwo:after { content: ""; display: block; width: 100%;  height:0; padding-bottom: 100%; background: #69c2c3; -moz-border-radius: 50%; -webkit-border-radius: 50%; border-radius: 50%;}
-.frontcircleTwo div {float:left; width:100%; padding-top:50%; line-height:1em; margin-top:-0.5em; text-align:center; color:white;}
+/* line 39, ../compass/sass/style.scss */
+.frontcircle:after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 0;
+  padding-bottom: 100%;
+  background: #69c2c3;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+}
 
-.frontcircleThree {width:100%;}
-.frontcircleThree:after { content: ""; display: block; width: 100%;  height:0; padding-bottom: 100%; background: #69c2c3; -moz-border-radius: 50%; -webkit-border-radius: 50%; border-radius: 50%;}
-.frontcircleThree div {float:left; width:100%; padding-top:50%; line-height:1em; margin-top:-0.5em; text-align:center; color:white;}
+/* line 51, ../compass/sass/style.scss */
+.frontcircle div {
+  float: left;
+  width: 100%;
+  padding-top: 50%;
+  line-height: 1em;
+  margin-top: -0.5em;
+  text-align: center;
+  color: white;
+}
 
+/* line 61, ../compass/sass/style.scss */
+.footbar {
+  text-align: right;
+  font-size: 70%;
+}
 
+/* line 63, ../compass/sass/style.scss */
+.footbar a:link, .footbar a:visited, .footbar a:hover, .footbar a:active {
+  color: #20254c;
+  margin-right: 20px;
+}

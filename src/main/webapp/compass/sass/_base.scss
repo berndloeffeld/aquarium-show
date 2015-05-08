@@ -1,0 +1,30 @@
+@import 'compass/css3';
+
+//Colors
+$light-blue: #69c2c3;
+$dark-blue: #20254c;
+$neon-blue: #00a3da;
+
+
+//Fonts
+@font-face {
+    font-family: 'Comfortaa'; 
+    src: url('/fonts/Comfortaa-Regular.ttf'); 
+}
+
+@font-face {
+    font-family: 'Comfortaa-Bold'; 
+    src: url('/fonts/Comfortaa-Bold.ttf'); 
+}
+
+//Superclasses
+.fullbar {
+  width: 100%; 
+  display: block;   
+  }
+
+.logotext {
+  font-family: Comfortaa-Bold, Georgia; 
+  letter-spacing: 0.1em; 
+  text-align: center;
+  }

@@ -42,7 +42,7 @@ public class AquariumController {
 		httpHeaders.setLocation(ServletUriComponentsBuilder
 				.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(result.getId()).toUri());
-		return new ResponseEntity<>(null, httpHeaders, HttpStatus.CREATED);
+		return new ResponseEntity<>(result, httpHeaders, HttpStatus.CREATED);
 	}
 
 	

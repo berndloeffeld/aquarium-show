@@ -1,10 +1,5 @@
 // Your code here
 
-var data = [
-	{author: "Pete Hunt", text: "This is one comment"},
-	{author: "Jordan Walke", text: "This is *another* comment"}
-];
-
 var Comment = React.createClass({
 	render: function() {
 		var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
@@ -36,13 +31,31 @@ var CommentList = React.createClass({
 });
 
 var CommentForm = React.createClass({
+	handleSubmit: function(e) {
+		e.preventDefault();
+	    var author = React.findDOMNode(this.refs.author).value.trim();
+	    var text = React.findDOMNode(this.refs.text).value.trim();
+	    if (!text || !author) {
+	    	return;
+	    }
+	    
+	    this.props.onCommentSubmit({author: author, text: text});
+	    
+	    React.findDOMNode(this.refs.author).value = '';
+	    React.findDOMNode(this.refs.text).value = '';
+	    return;
+	},
+	
 	render: function() {
 		return (
-			<div className="commentForm">
-			</div>
-		);
-	}
-});
+				<form className="commentForm" onSubmit={this.handleSubmit}>
+					<input type="text" placeholder="Your name" ref="author" />
+					<input type="text" placeholder="Say something..." ref="text" />
+					<input type="submit" value="Post" />
+				</form>
+			);
+		}
+	});
 
 var CommentBox = React.createClass({
 	loadCommentsFromServer: function() {
@@ -54,6 +67,7 @@ var CommentBox = React.createClass({
 				this.setState({data: data});
 			}.bind(this),
 			error: function(xhr, status, err) {
+				console.error(data);
 				console.error(this.props.url, status, err.toString());
 			}.bind(this)
 		});
@@ -65,22 +79,43 @@ var CommentBox = React.createClass({
 
 	componentDidMount: function() {
 		this.loadCommentsFromServer();
-		setInterval(this.loadCommentsFromServer, this.props.pollInterval);
+		setInterval(this.loadCommentsFromServer, 10000000);
 	},	
+
+	handleCommentSubmit: function(comment) {
+	    var comments = this.state.data;
+	    var newComments = comments.concat([comment]);
+	    this.setState({data: newComments});
+	    $.ajax({
+	        url: this.props.url,
+	        dataType: 'json',
+	        contentType: "application/json; charset=utf-8",
+	        type: 'POST',
+	        data: JSON.stringify(comment),
+	        success: function(data) {
+	          console.log("Erfolg" + data);
+	          this.loadCommentsFromServer;
+	          
+	        }.bind(this),
+	        error: function(xhr, status, err) {
+	          console.error(this.props.url, status, err);
+	        }.bind(this)
+	    });
+	},
 	
 	render: function() {
 		return (
 			<div className="commentBox">
 				<h1>Comments</h1>
-				<CommentList data={this.state.data} pollInterval={2000} />
-				<CommentForm />
+				<CommentList data={this.state.data} />
+				<CommentForm onCommentSubmit={this.handleCommentSubmit} />
 			</div>
 		);
 	}
 });
 
 React.render(
-	<CommentBox url="js/comments.json" />,
+	<CommentBox url="/api/v1/comment/" />,
 	document.getElementById('content')
 );
 
